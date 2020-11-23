@@ -13,8 +13,8 @@ export default {
     LoadingChart
   },
   props: {
-    data: { type: [Object, Array], default () { return {} } },
-    settings: { type: [Object, Array], default () { return {} } },
+    data: { type: [Object, Array], default() { return {} } },
+    settings: { type: [Object, Array], default() { return {} } },
     // echarts default options
     title: Object,
     legend: Object,
@@ -64,7 +64,7 @@ export default {
     renderer: { type: String, default: 'canvas' },
     height: { type: Number, default: 400 }
   },
-  data () {
+  data() {
     return {
       // echarts instance
       ec: null,
@@ -72,10 +72,10 @@ export default {
     }
   },
   computed: {
-    chartColor () {
+    chartColor() {
       return this.theme ? this.color : (this.color || color)
     },
-    isEmptyData () {
+    isEmptyData() {
       if (isNull(this.data) || isEmpty(this.data) || isUndefined(this.data)) {
         return true
       } else {
@@ -87,16 +87,16 @@ export default {
         }
       }
     },
-    isEmptySeries () {
+    isEmptySeries() {
       return isNull(this.series) || isEmpty(this.series) || isUndefined(this.series)
     },
-    isHasData () {
+    isHasData() {
       return !this.isEmptyData || !this.isEmptySeries
     },
-    isHasParentStyle () {
+    isHasParentStyle() {
       return this.loading || (this.isEmptyData && this.isEmptySeries)
     },
-    parentStyle () {
+    parentStyle() {
       const parentStyle = this.isHasParentStyle
         ? { position: 'relative', height: `${this.height}px` }
         : {}
@@ -106,22 +106,22 @@ export default {
   watch: {
     data: {
       deep: true,
-      handler (v) {
+      handler(v) {
         if (v) { this.dataHandler(v) }
       }
     },
     settings: {
       deep: true,
-      handler (v) {
+      handler(v) {
         this.dataHandler(this.data)
       }
     },
-    ec (val) {
+    ec(val) {
       this.$emit('update:ec', val)
     }
   },
   methods: {
-    dataHandler (data) {
+    dataHandler(data) {
       if (!this.chartHandler || (this.isEmptyData && this.isEmptySeries)) return
       const extra = {
         tooltipVisible: this.tooltipVisible,
@@ -142,7 +142,7 @@ export default {
         }
       }
     },
-    optionsHandler (options) {
+    optionsHandler(options) {
       options.color = this.chartColor
       // handle legend
       if (this.legendPosition && options.legend) {
@@ -171,10 +171,10 @@ export default {
       // Merge options
       this.options = Object.assign(cloneDeep(this.options), options)
     },
-    init () {
+    init() {
       if (this.data) this.dataHandler(this.data)
     },
-    addWatchToProps () {
+    addWatchToProps() {
       const watchedVariable = this._watchers.map(watcher => watcher.expression)
       Object.keys(this.$props).forEach(prop => {
         if (!~watchedVariable.indexOf(prop)) {
@@ -189,7 +189,7 @@ export default {
       })
     }
   },
-  created () {
+  created() {
     // init options
     this.initOptions = {
       renderer: this.renderer
@@ -197,7 +197,7 @@ export default {
     this._once = {}
     this.addWatchToProps()
   },
-  mounted () {
+  mounted() {
     this.init()
   }
 }
